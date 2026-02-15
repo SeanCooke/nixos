@@ -11,13 +11,6 @@
     ];
 
   # Bootloader.
-  boot.kernel.sysctl = {
-    "net.ipv6.conf.all.disable_ipv6" = 1;
-    "net.ipv6.conf.default.disable_ipv6" = 1;
-    "net.ipv6.conf.lo.disable_ipv6" = 1;
-    "net.ipv4.conf.all.rp_filter" = 0;
-    "net.ipv4.conf.default.rp_filter" = 0;
-  };
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
@@ -94,7 +87,7 @@
     ];
   };
 
-  # Allow unfree packages.
+  # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
   # List packages installed in system profile. To search, run:
@@ -130,7 +123,7 @@
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  networking.firewall.checkReversePath = "loose";
+  # networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
