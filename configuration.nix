@@ -95,6 +95,7 @@
   environment.systemPackages = with pkgs; [
     git
     keepassxc
+    openvpn
     (pkgs.brave.override {
       commandLineArgs = [
         "--enable-features=TouchpadOverscrollHistoryNavigation"
@@ -102,8 +103,10 @@
     })
     slack
     spotify
+    unzip
     vim
     vscode
+    wget
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
