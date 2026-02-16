@@ -93,7 +93,6 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    docker
     git
     keepassxc
     openvpn
@@ -110,6 +109,9 @@
     wget
   ];
 
+  # Enabling docker.
+  virtualisation.docker = true;
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -119,7 +121,6 @@
   # };
   # Enable GNOME Dark Mode.
   programs.dconf.enable = true;
-
   programs.dconf.profiles.user.databases = [
     {
       settings = {
