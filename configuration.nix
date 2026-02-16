@@ -119,15 +119,15 @@
   # Enable GNOME Dark Mode.
   programs.dconf.enable = true;
 
-  environment.etc."dconf/db/local.d/00-dark-mode".text = ''
-    [org/gnome/desktop/interface]
-    color-scheme='prefer-dark'
-  '';
-
-  environment.etc."dconf/profile/user".text = ''
-    user-db:user
-    system-db:local
-  '';
+  programs.dconf.profiles.user.databases = [
+    {
+      settings = {
+        "org/gnome/desktop/interface" = {
+          color-scheme = "prefer-dark";
+        };
+      };
+    }
+  ];
 
   # List services that you want to enable:
 
