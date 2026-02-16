@@ -116,11 +116,20 @@
   #   enable = true;
   #   enableSSHSupport = true;
   # };
+  # Allowing GNOME configuration.
+  programs.dconf.enable = true;
 
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
+
+  # Enable GNOME Dark Mode.
+  services.gnome.gsettingsOverrides = {
+    "org.gnome.desktop.interface" = {
+      color-scheme = "prefer-dark";
+    };
+  }; 
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
