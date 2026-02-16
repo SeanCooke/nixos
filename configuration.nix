@@ -109,6 +109,12 @@
     wget
   ];
 
+  # Setting default web browser to Brave.
+  xdg.mime.defaultApplications = {
+    "x-scheme-handler/http"  = "brave-browser.desktop";
+    "x-scheme-handler/https" = "brave-browser.desktop";
+  };
+
   # Enabling docker.
   virtualisation.docker = {
     enable = true;
