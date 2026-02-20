@@ -101,6 +101,7 @@
         "--enable-features=TouchpadOverscrollHistoryNavigation"
       ];
     })
+    libreoffice
     slack
     spotify
     unzip
