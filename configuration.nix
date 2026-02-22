@@ -154,11 +154,6 @@
     pkgs.linux-firmware
   ];
 
-  # Some MT79xx modules dislike autosuspend; safe to try
-  boot.extraModprobeConfig = ''
-    options btusb enable_autosuspend=0
-  '';
-
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
