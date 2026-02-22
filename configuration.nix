@@ -144,9 +144,6 @@
     }
   ];
 
-  # Enable Bluetooth.
-  hardware.bluetooth.enable = true;
-
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
