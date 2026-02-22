@@ -141,6 +141,24 @@
     }
   ];
 
+  # Enable Bluetooth.
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+  services.blueman.enable = true;        # if using GNOME, gnome3.gnome-bluetooth via gnome services is fine; blueman is a good fallback
+  hardware.enableRedistributableFirmware = true;
+
+  # Newer kernel + explicit firmware for the IMC/MT79xx module
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
+  hardware.firmware = [
+    pkgs.linux-firmware
+  ];
+
+  # Some MT79xx modules dislike autosuspend; safe to try
+  boot.extraModprobeConfig = ''
+    options btusb enable_autosuspend=0
+  '';
+
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
