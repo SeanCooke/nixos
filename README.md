@@ -5,6 +5,7 @@ Collection of configuration files for my personal NixOS laptop.
 1. Clone this github repo into your home directory.
 ```bash
 cd ~/
+nix-shell -p git
 git clone https://github.com/SeanCooke/nixos
 ```
 2. Copy /etc/nixos/hardware-configuration.nix to ~/nixos.
