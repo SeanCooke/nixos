@@ -108,6 +108,7 @@
     libreoffice
     slack
     spotify
+    tree
     unzip
     vim
     vscode
