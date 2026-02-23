@@ -8,15 +8,20 @@ cd ~/
 nix-shell -p git
 git clone https://github.com/SeanCooke/nixos
 ```
-2. Copy /etc/nixos/hardware-configuration.nix to ~/nixos.
+2. Copy /etc/nixos/hardware-configuration.nix to ~/nixos/nixos.
 ```bash
-cp /etc/nixos/hardware-configuration.nix ~/nixos
+cp /etc/nixos/hardware-configuration.nix ~/nixos/nixos
 ```
 3. Delete your /etc/nixos directory.
 ```bash
 sudo rm -rf /etc/nixos
 ```
-4. Create a symlink from /etc/nixos to your ~/nixos directory.
+4. Delete your ~/.config/home-manager directory.
+```bash
+sudo rm -rf ~/.config/home-manager 
 ```
-sudo ln -s /home/scooke/nixos/ /etc/nixos
+5. Create symlinks from /etc/nixos and ~/.config/home-manager to your ~/nixos directory.
+```bash
+sudo ln -s ~/nixos/nixos /etc/nixos
+sudo ln -s ~/nixos/home-manager ~/.config/home-manager
 ``` 
