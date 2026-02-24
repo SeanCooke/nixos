@@ -121,6 +121,9 @@
     "x-scheme-handler/https" = "brave-browser.desktop";
   };
 
+  # Configuring Brave policies.
+  environment.etc."/brave/policies/managed/GroupPolicy.json".source = ./../apps/brave/policies.json;
+
   # Enabling docker.
   virtualisation.docker = {
     enable = true;
