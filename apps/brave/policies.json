@@ -1,4 +1,6 @@
 {
+  "BraveNewsDisabled": true,
   "BraveRewardsDisabled": true,
+  "BraveTalkDisabled": true,
   "BraveWalletDisabled": true
 }
