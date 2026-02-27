@@ -2,5 +2,9 @@
   "BraveNewsDisabled": true,
   "BraveRewardsDisabled": true,
   "BraveTalkDisabled": true,
-  "BraveWalletDisabled": true
+  "BraveWalletDisabled": true,
+  "DefaultSearchProviderEnabled": true,
+  "DefaultSearchProviderName": "DuckDuckGo",
+  "DefaultSearchProviderSearchURL": "https://duckduckgo.com/?q={searchTerms}",
+  "DefaultSearchProviderKeyword": "ddg"
 }
