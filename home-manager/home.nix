@@ -63,7 +63,6 @@
         .brave.new_tab_page.show_top_sites = false
         | .ntp.shortcuts_visible = false
         | .ntp.shortcust_visible = false
-        | .ntp.num_personal_suggestions = 0
       ' "$pref" > "$tmp" && mv "$tmp" "$pref"
     fi
 
