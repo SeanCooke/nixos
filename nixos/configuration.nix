@@ -122,6 +122,11 @@
     "x-scheme-handler/https" = "brave-browser.desktop";
   };
 
+  # Disabling Brave News popup via managed policy.
+  environment.etc."brave/policies/managed/disable-news.json".text = builtins.toJSON {
+    BraveNewTabPageShowBraveNews = false;
+  };
+
   # Enabling docker.
   virtualisation.docker = {
     enable = true;
