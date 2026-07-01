@@ -97,6 +97,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     codex
+    claude-code
     git
     keepassxc
     openvpn
