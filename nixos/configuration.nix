@@ -122,12 +122,8 @@
     "x-scheme-handler/https" = "brave-browser.desktop";
   };
 
-  # Disabling Brave News, Rewards, and Talk via managed policy.
-  environment.etc."brave/policies/managed/disable-new-tab-cards.json".text = builtins.toJSON {
-    BraveNewTabPageShowBraveNews = false;
-    BraveRewardsDisabled = true;
-    BraveTalkDisabled = true;
-  };
+  # Configuring Brave policies.
+  environment.etc."/brave/policies/managed/GroupPolicy.json".source = ./../apps/brave/policies.json;
 
   # Enabling docker.
   virtualisation.docker = {

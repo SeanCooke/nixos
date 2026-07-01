@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   # Home Manager needs a bit of information about you and the paths it should
@@ -50,6 +50,28 @@
     #   org.gradle.daemon.idletimeout=3600000
     # '';
   };
+
+  # Keep Brave's new tab page clean: force-disable top sites and wipe their backing DBs.
+  home.activation.braveHideTopSites = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    pref="$HOME/.config/BraveSoftware/Brave-Browser/Default/Preferences"
+    top_sites="$HOME/.config/BraveSoftware/Brave-Browser/Default/Top Sites"
+    shortcuts="$HOME/.config/BraveSoftware/Brave-Browser/Default/Shortcuts"
+
+    if [ -f "$pref" ]; then
+      tmp="$(mktemp)"
+      ${pkgs.jq}/bin/jq '
+        .brave.new_tab_page.show_top_sites = false
+        | .brave.new_tab_page.show_stats = false
+        | .ntp.shortcuts_visible = false
+        | .ntp.shortcust_visible = false
+        | .brave.brave_search["show-ntp-search"] = false
+        | .brave.shields.stats_badge_visible = false
+      ' "$pref" > "$tmp" && mv "$tmp" "$pref"
+    fi
+
+    # Remove cached top sites/shortcuts so Brave can't repopulate the grid.
+    rm -rf "$top_sites" "$shortcuts"
+  '';
 
   # Home Manager can also manage your environment variables through
   # 'home.sessionVariables'. These will be explicitly sourced when using a
