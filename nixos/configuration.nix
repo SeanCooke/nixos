@@ -122,10 +122,11 @@
     "x-scheme-handler/https" = "brave-browser.desktop";
   };
 
-  # Disabling Brave News and Brave Rewards popups via managed policy.
-  environment.etc."brave/policies/managed/disable-news.json".text = builtins.toJSON {
+  # Disabling Brave News, Rewards, and Talk via managed policy.
+  environment.etc."brave/policies/managed/disable-new-tab-cards.json".text = builtins.toJSON {
     BraveNewTabPageShowBraveNews = false;
     BraveRewardsDisabled = true;
+    BraveTalkDisabled = true;
   };
 
   # Enabling docker.
