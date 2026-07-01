@@ -97,6 +97,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     codex
+    claude-code
     git
     keepassxc
     openvpn
@@ -120,6 +121,9 @@
     "x-scheme-handler/http"  = "brave-browser.desktop";
     "x-scheme-handler/https" = "brave-browser.desktop";
   };
+
+  # Configuring Brave policies.
+  environment.etc."/brave/policies/managed/GroupPolicy.json".source = ./../apps/brave/policies.json;
 
   # Enabling docker.
   virtualisation.docker = {

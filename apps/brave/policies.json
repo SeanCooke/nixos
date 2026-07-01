@@ -1,0 +1,12 @@
+{
+  "BraveAIChatEnabled": false,
+  "BraveNewsDisabled": true,
+  "BraveRewardsDisabled": true,
+  "BraveNewTabPageShowBraveNews": false,
+  "BraveTalkDisabled": true,
+  "BraveWalletDisabled": true,
+  "DefaultSearchProviderEnabled": true,
+  "DefaultSearchProviderName": "DuckDuckGo",
+  "DefaultSearchProviderSearchURL": "https://duckduckgo.com/?q={searchTerms}",
+  "DefaultSearchProviderKeyword": "ddg"
+}
