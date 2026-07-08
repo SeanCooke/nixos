@@ -96,6 +96,15 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
+  # Force git/ssh to prompt in the terminal instead of launching the GNOME
+  # ssh-askpass dialog, which GNOME exports SSH_ASKPASS for on session start.
+  programs.bash = {
+    enable = true;
+    bashrcExtra = ''
+      unset SSH_ASKPASS
+    '';
+  };
+
   # Configuring the GNOME dock.
   dconf.settings = {
     "org/gnome/shell" = {
