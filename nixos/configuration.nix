@@ -80,7 +80,7 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-  # Explicitly enabling Bluetooth on boot and after autosuspend.
+  # Enabling Bluetooth on boot and after autosuspend.
   hardware.bluetooth = {
     enable = true;
     powerOnBoot = true;
