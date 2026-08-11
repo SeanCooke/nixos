@@ -8,7 +8,7 @@ cd ~/
 nix-shell -p git
 git clone https://github.com/SeanCooke/nixos-config
 ```
-2. Copy /etc/nixos/hardware-configuration.nix to ~/nixos-config/nixos.
+2. Replace ~/nixos-config/nixos/hardware-configuration.nix with your /etc/nixos/hardware-configuration.nix.
 ```bash
 cp /etc/nixos/hardware-configuration.nix ~/nixos-config/nixos
 ```
