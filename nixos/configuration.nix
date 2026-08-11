@@ -80,6 +80,15 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
+  # Enabling Bluetooth on boot and after autosuspend.
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+  };
+  boot.extraModprobeConfig = ''
+    options btusb enable_autosuspend=n
+  '';
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.scooke = {
     isNormalUser = true;
