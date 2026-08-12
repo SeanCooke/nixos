@@ -102,11 +102,19 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
+  # Flakes
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.nixPath = [
+    "nixos-config=/etc/nixos/configuration.nix"
+    "nixpkgs=flake:nixpkgs"
+  ];
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     codex
     claude-code
+    gh
     git
     keepassxc
     openvpn
@@ -123,6 +131,7 @@
     vim
     vscode
     wget
+    zoom-us
   ];
 
   # Setting default web browser to Brave.
