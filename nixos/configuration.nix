@@ -104,6 +104,7 @@
   environment.systemPackages = with pkgs; [
     codex
     claude-code
+    gh
     git
     keepassxc
     openvpn
@@ -120,6 +121,7 @@
     vim
     vscode
     wget
+    zoom-us
   ];
 
   # Setting default web browser to Brave.
