@@ -1,5 +1,5 @@
 {
-  description = "nixos-config — laptop system config with a VM test target";
+  description = "nixos-config — laptop system config";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
@@ -13,30 +13,20 @@
       username = "scooke";
       fullName = "Sean Cooke";
       specialArgs = { inherit username fullName; };
-      commonModules = [
-        ./nixos/configuration.nix
-        home-manager.nixosModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.extraSpecialArgs = { inherit username; };
-          home-manager.users.${username} = import ./home-manager/home.nix;
-        }
-      ];
     in {
       nixosConfigurations.laptop = nixpkgs.lib.nixosSystem {
         inherit system specialArgs;
-        modules = commonModules ++ [
+        modules = [
+          ./nixos/configuration.nix
           ./nixos/hardware-configuration.nix
           { networking.hostName = "laptop"; }
-        ];
-      };
-
-      nixosConfigurations.vmtest = nixpkgs.lib.nixosSystem {
-        inherit system specialArgs;
-        modules = commonModules ++ [
-          ./nixos/vm.nix
-          { networking.hostName = "vmtest"; }
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = { inherit username; };
+            home-manager.users.${username} = import ./home-manager/home.nix;
+          }
         ];
       };
     };

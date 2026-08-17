@@ -1,6 +1,0 @@
-# Nix build output symlink
-result
-result-*
-
-# VM disk images
-*.qcow2
