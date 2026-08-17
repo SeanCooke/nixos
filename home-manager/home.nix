@@ -116,6 +116,11 @@
         "org.gnome.Nautilus.desktop"
       ];
     };
+
+    # Increasing the Console font size by a multiplier.
+    "org/gnome/Console" = {
+      font-scale = 1.5;
+    };
   };
 
 }
