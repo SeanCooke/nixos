@@ -21,6 +21,9 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
+  # Enabling VPN from GNOME.
+  networking.networkmanager.plugins = with pkgs; [ networkmanager-openvpn ];
+
   # Set your time zone.
   time.timeZone = "America/New_York";
 
