@@ -56,3 +56,19 @@ sudo nixos-rebuild switch --flake .#laptop
 ```
 
 Commit the resulting `flake.lock` to keep every machine on the same package versions.
+
+## NordVPN
+The `networkmanager-openvpn` plugin enabled in `nixos/configuration.nix` lets you import NordVPN OpenVPN profiles and toggle them from the GNOME system menu. GNOME has no traditional tray, so the VPN switch lives in the top-right Quick Settings menu alongside Wi-Fi and volume.
+
+1. After the first rebuild that adds the plugin, restart NetworkManager so it loads the new VPN service. Otherwise activating the VPN fails with `The VPN service 'org.freedesktop.NetworkManager.openvpn' was not installed`. A reboot works too.
+```bash
+sudo systemctl restart NetworkManager
+```
+
+2. From the [NordVPN dashboard](https://my.nordaccount.com/), open **NordVPN** → **Manual setup** and copy your **service credentials** (a username and password separate from your account login).
+
+3. Download an OpenVPN config file (`.ovpn`) for a server from that same page or the [server recommender](https://nordvpn.com/servers/tools/).
+
+4. Import it: **Settings** → **Network** → **VPN** → **+** → **Import from file**, select the `.ovpn`, enter the service username and password, then **Add**.
+
+5. Toggle the VPN on or off from the top-right system menu. Confirm it worked at [nordvpn.com/what-is-my-ip](https://nordvpn.com/what-is-my-ip/), which should show the server's location instead of your home IP. Repeat steps 3–4 with another `.ovpn` to add a different server.
