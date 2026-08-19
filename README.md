@@ -58,7 +58,7 @@ sudo nixos-rebuild switch --flake .#laptop
 Commit the resulting `flake.lock` to keep every machine on the same package versions.
 
 ## NordVPN
-The `networkmanager-openvpn` plugin enabled in `nixos/configuration.nix` lets you import NordVPN OpenVPN profiles and toggle them from the GNOME system menu. GNOME has no traditional tray, so the VPN switch lives in the top-right Quick Settings menu alongside Wi-Fi and volume.
+The `networkmanager-openvpn` plugin enabled in `nixos/configuration.nix` lets you import NordVPN profiles and toggle them from the GNOME system menu.
 
 1. After the first rebuild that adds the plugin, restart NetworkManager so it loads the new VPN service. Otherwise activating the VPN fails with `The VPN service 'org.freedesktop.NetworkManager.openvpn' was not installed`. A reboot works too.
 ```bash
