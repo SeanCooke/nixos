@@ -5,7 +5,7 @@ Collection of configuration files for my personal NixOS laptop, managed as a [Ni
 - `flake.nix` — Entrypoint. Defines the `laptop` system and wires in [Home Manager](https://github.com/nix-community/home-manager) as a NixOS module.
 - `flake.lock` — Pinned revisions of `nixpkgs` and `home-manager`.
 - `nixos/configuration.nix` — System configuration.
-- `nixos/hardware-configuration.nix` — Hardware scan for this laptop. On different hardware, replace it with your own `/etc/nixos/hardware-configuration.nix`.
+- `nixos/hardware-configuration.nix` — Example hardware scan.  Replace it with your own `/etc/nixos/hardware-configuration.nix`.
 - `home-manager/home.nix` — Home Manager.
 
 ## Install
