@@ -16,7 +16,7 @@ nix-shell -p git
 git clone https://github.com/SeanCooke/nixos-config
 ```
 
-2. Change into the repo and run [`install.sh`](https://github.com/SeanCooke/nixos-config/blob/main/install.sh). It replaces the tracked hardware scan with this machine's own, enables flakes, and builds the system.
+2. Change into the repo and run [`install.sh`](https://github.com/SeanCooke/nixos-config/blob/main/install.sh). It replaces the tracked hardware scan, enables flakes, and builds the system.
 ```bash
 cd ~/nixos-config
 ./install.sh
