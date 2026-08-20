@@ -12,6 +12,6 @@ cat <<'EOF'
                                                      /____/
 EOF
 
-# Enable flakes and rebuild
+# Enable flakes and rebuild.
 sudo NIX_CONFIG="experimental-features = nix-command flakes" \
   nixos-rebuild switch --flake "$HOME/nixos-config#laptop"
