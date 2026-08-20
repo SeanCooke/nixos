@@ -18,9 +18,7 @@
         inherit system specialArgs;
         modules = [
           ./nixos/configuration.nix
-          # Read this machine's hardware scan directly, so the repo stays
-          # hardware-agnostic and its git tree stays clean.
-          /etc/nixos/hardware-configuration.nix
+          ./nixos/hardware-configuration.nix
           { networking.hostName = "laptop"; }
           home-manager.nixosModules.home-manager
           {

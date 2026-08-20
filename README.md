@@ -5,9 +5,8 @@ Collection of configuration files for my personal NixOS laptop, managed as a [Ni
 - `flake.nix` — Entrypoint. Defines the `laptop` system and wires in [Home Manager](https://github.com/nix-community/home-manager) as a NixOS module.
 - `flake.lock` — Pinned revisions of `nixpkgs` and `home-manager`.
 - `nixos/configuration.nix` — System configuration.
+- `nixos/hardware-configuration.nix` — Hardware scan for this laptop. On different hardware, replace it with your own `/etc/nixos/hardware-configuration.nix`.
 - `home-manager/home.nix` — Home Manager.
-
-The machine's hardware scan is not tracked here; `flake.nix` reads `/etc/nixos/hardware-configuration.nix` directly so the repo stays hardware-agnostic.
 
 ## Install
 1. Clone this github repo into your home directory.
@@ -22,7 +21,12 @@ git clone https://github.com/SeanCooke/nixos-config
 cd ~/nixos-config
 ```
 
-3. Run `install.sh`. It enables flakes and builds the configuration. `flake.nix` reads this machine's `/etc/nixos/hardware-configuration.nix` directly, so there is nothing to copy first.
+3. If you are on different hardware than this laptop, first replace the tracked hardware scan with your own.
+```bash
+cp /etc/nixos/hardware-configuration.nix nixos/
+```
+
+4. Run `install.sh`. It enables flakes and builds the configuration.
 ```bash
 ./install.sh
 ```

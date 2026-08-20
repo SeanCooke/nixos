@@ -12,7 +12,6 @@ cat <<'EOF'
                                                      /____/
 EOF
 
-# Enable flakes and rebuild. The flake reads this machine's hardware scan
-# straight from /etc/nixos, so there is nothing to copy first.
+# Enable flakes and rebuild
 sudo NIX_CONFIG="experimental-features = nix-command flakes" \
   nixos-rebuild switch --flake "$HOME/nixos-config#laptop"
