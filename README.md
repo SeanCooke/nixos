@@ -16,17 +16,10 @@ nix-shell -p git
 git clone https://github.com/SeanCooke/nixos-config
 ```
 
-2. Change into the repo and run `install.sh`.
+2. Change into the repo and run [`install.sh`](https://github.com/SeanCooke/nixos-config/blob/main/install.sh). It replaces the tracked hardware scan with this machine's own, enables flakes, and builds the system.
 ```bash
 cd ~/nixos-config
 ./install.sh
-```
-
-`install.sh` replaces the tracked hardware scan with this machine's own, enables flakes, and builds the system.
-```bash
-cp /etc/nixos/hardware-configuration.nix "$HOME/nixos-config/nixos/"
-sudo NIX_CONFIG="experimental-features = nix-command flakes" \
-  nixos-rebuild switch --flake "$HOME/nixos-config#laptop"
 ```
 
 Once this configuration is active, flakes are enabled system wide by `nixos/configuration.nix` and later rebuilds no longer need `NIX_CONFIG`.
