@@ -47,16 +47,6 @@ sudo nixos-rebuild switch --flake .#laptop
 
 A flake only sees files that git tracks. Editing a file already in the repo is enough, but a file you add must be `git add`ed before `nixos-rebuild` will see it.
 
-## Update
-Bump the pinned `nixpkgs` and `home-manager` revisions, then rebuild.
-```bash
-cd ~/nixos-config
-nix flake update
-sudo nixos-rebuild switch --flake .#laptop
-```
-
-Commit the resulting `flake.lock` to keep every machine on the same package versions.
-
 ## NordVPN
 The `networkmanager-openvpn` plugin enabled in `nixos/configuration.nix` lets you import NordVPN profiles and toggle them from the GNOME system menu.
 
