@@ -1,14 +1,12 @@
 # nixos-config
 Collection of configuration files for my personal NixOS laptop, managed as a [Nix flake](https://nixos.wiki/wiki/flakes).
 
-Package versions are pinned in `flake.lock`, so rebuilding this configuration produces the same system on every machine until the lock file is deliberately updated.
-
 ## Layout
 - `flake.nix` — Entrypoint. Defines the `laptop` system and wires in [Home Manager](https://github.com/nix-community/home-manager) as a NixOS module.
 - `flake.lock` — Pinned revisions of `nixpkgs` and `home-manager`.
 - `nixos/configuration.nix` — System configuration.
-- `nixos/hardware-configuration.nix` — Hardware scan. Machine specific; replace it with your own.
-- `home-manager/home.nix` — User configuration.
+- `nixos/hardware-configuration.nix` — Hardware scan.  Machine specific; replace it with your own.
+- `home-manager/home.nix` — Home Manager.
 
 ## Install
 1. Clone this github repo into your home directory.
@@ -28,15 +26,13 @@ cd ~/nixos-config
 cp /etc/nixos/hardware-configuration.nix nixos/
 ```
 
-4. Build and activate the configuration. Flakes are an experimental feature and are not enabled on a stock NixOS install, so turn them on for this first rebuild.
+4. Flakes are an experimental feature and are not enabled by default.  Enable flakes and build the configuration.
 ```bash
 sudo NIX_CONFIG="experimental-features = nix-command flakes" \
   nixos-rebuild switch --flake .#laptop
 ```
 
 Once this configuration is active, flakes are enabled system wide by `nixos/configuration.nix` and later rebuilds no longer need `NIX_CONFIG`.
-
-Home Manager is applied by that same command. There is no separate `home-manager switch` step, and neither `/etc/nixos` nor `~/.config/home-manager` needs to be symlinked to this repo.
 
 ## Rebuild
 After editing any file in this repo.
