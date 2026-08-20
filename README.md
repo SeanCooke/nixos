@@ -5,7 +5,7 @@ Collection of configuration files for my personal NixOS laptop, managed as a [Ni
 - `flake.nix` — Entrypoint. Defines the `laptop` system and wires in [Home Manager](https://github.com/nix-community/home-manager) as a NixOS module.
 - `flake.lock` — Pinned revisions of `nixpkgs` and `home-manager`.
 - `nixos/configuration.nix` — System configuration.
-- `nixos/hardware-configuration.nix` — Hardware scan.  Machine specific; replace it with your own.
+- `nixos/hardware-configuration.nix` — Example hardware scan.  Replace it with your own `/etc/nixos/hardware-configuration.nix`.
 - `home-manager/home.nix` — Home Manager.
 
 ## Install
@@ -16,20 +16,10 @@ nix-shell -p git
 git clone https://github.com/SeanCooke/nixos-config
 ```
 
-2. Change into the repo. Every command below is run from here.
+2. Change into the repo and run [`install.sh`](https://github.com/SeanCooke/nixos-config/blob/main/install.sh). It replaces the tracked hardware scan, enables flakes, and builds the system.
 ```bash
 cd ~/nixos-config
-```
-
-3. Replace nixos/hardware-configuration.nix with your /etc/nixos/hardware-configuration.nix.
-```bash
-cp /etc/nixos/hardware-configuration.nix nixos/
-```
-
-4. Flakes are an experimental feature and are not enabled by default.  Enable flakes and build the configuration.
-```bash
-sudo NIX_CONFIG="experimental-features = nix-command flakes" \
-  nixos-rebuild switch --flake .#laptop
+./install.sh
 ```
 
 Once this configuration is active, flakes are enabled system wide by `nixos/configuration.nix` and later rebuilds no longer need `NIX_CONFIG`.
