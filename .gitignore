@@ -1,0 +1,3 @@
+# hardware-configuration.nix is machine-specific; flake.nix reads it
+# directly from /etc/nixos, so no copy is tracked here.
+nixos/hardware-configuration.nix
