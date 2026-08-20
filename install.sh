@@ -12,6 +12,9 @@ cat <<'EOF'
                                                      /____/
 EOF
 
+# Replace the tracked hardware scan with this machine's own.
+cp /etc/nixos/hardware-configuration.nix "$HOME/nixos-config/nixos/"
+
 # Enable flakes and rebuild.
 sudo NIX_CONFIG="experimental-features = nix-command flakes" \
   nixos-rebuild switch --flake "$HOME/nixos-config#laptop"
