@@ -21,7 +21,7 @@ git clone https://github.com/SeanCooke/nixos-config
 cd ~/nixos-config
 ```
 
-3. If you are on different hardware than this laptop, first replace the tracked hardware scan with your own.
+3. Replace the tracked hardware scan with your own.
 ```bash
 cp /etc/nixos/hardware-configuration.nix nixos/
 ```
