@@ -2,14 +2,9 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, username, fullName, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
-
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -17,7 +12,6 @@
   # Loading the latest Linux kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -26,6 +20,9 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
+
+  # Enabling VPN from GNOME.
+  networking.networkmanager.plugins = with pkgs; [ networkmanager-openvpn ];
 
   # Set your time zone.
   time.timeZone = "America/New_York";
@@ -90,9 +87,9 @@
   '';
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.scooke = {
+  users.users.${username} = {
     isNormalUser = true;
-    description = "Sean Cooke";
+    description = fullName;
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
     #  thunderbird
@@ -102,11 +99,14 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
+  # Enable flakes
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    codex
     claude-code
+    gh
     git
     keepassxc
     openvpn
@@ -123,6 +123,7 @@
     vim
     vscode
     wget
+    zoom-us
   ];
 
   # Setting default web browser to Brave.
