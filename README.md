@@ -11,6 +11,8 @@ Collection of configuration files for my personal NixOS laptop, managed as a [Ni
 - `home-manager/home.nix` — Home Manager.
 
 ## Install
+`nixos-config` can only be run on machines where NixOS is already installed. You can download the NixOS ISO from the [official NixOS download page](https://nixos.org/download.html#nixos-iso).
+
 1. Clone this github repo into your home directory.
 ```bash
 cd ~/
