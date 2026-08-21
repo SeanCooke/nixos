@@ -111,7 +111,6 @@
       favorite-apps = [
         "brave-browser.desktop"
         "org.gnome.Geary.desktop"
-        "org.gnome.Calendar.desktop"
         "spotify.desktop"
         "org.gnome.Nautilus.desktop"
       ];
