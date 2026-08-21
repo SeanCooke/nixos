@@ -8,5 +8,19 @@
   "DefaultSearchProviderEnabled": true,
   "DefaultSearchProviderName": "DuckDuckGo",
   "DefaultSearchProviderSearchURL": "https://duckduckgo.com/?q={searchTerms}",
-  "DefaultSearchProviderKeyword": "ddg"
+  "DefaultSearchProviderKeyword": "ddg",
+  "SiteSearchSettings": [
+    {
+      "name": "YouTube",
+      "shortcut": "yt",
+      "url": "https://www.youtube.com/results?search_query={searchTerms}",
+      "featured": true
+    },
+    {
+      "name": "Wikipedia",
+      "shortcut": "wiki",
+      "url": "https://en.wikipedia.org/w/index.php?search={searchTerms}",
+      "featured": true
+    }
+  ]
 }
