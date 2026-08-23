@@ -39,9 +39,6 @@
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
   home.file = {
-    # Configuring Claude Code.
-    ".claude/settings.json".source = ./../apps/claude-code/settings.json;
-
     # # Building this configuration will create a copy of 'dotfiles/screenrc' in
     # # the Nix store. Activating the configuration will then make '~/.screenrc' a
     # # symlink to the Nix store copy.
@@ -53,6 +50,25 @@
     #   org.gradle.daemon.idletimeout=3600000
     # '';
   };
+
+  # Configuring Claude Code. Claude will also write to this file so we want to
+  # merge our settings with Claude's current state rather than overwrite it.
+  home.activation.claudeCodeSettings = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    settings="$HOME/.claude/settings.json"
+    mkdir -p "$(dirname "$settings")"
+
+    # Replaces missing or malformed ~/.claude/settings.json with {}.
+    if ! ${pkgs.jq}/bin/jq -e . "$settings" > /dev/null 2>&1; then
+      echo '{}' > "$settings"
+    fi
+
+    # Merging keys from apps/claude-code/settings.json into
+    # ~/.claude/settings.json giving priority to keys in
+    # apps/claude-code/settings.json.
+    tmp="$(mktemp)"
+    ${pkgs.jq}/bin/jq -s '.[0] * .[1]' \
+      "$settings" ${./../apps/claude-code/settings.json} > "$tmp" && mv "$tmp" "$settings"
+  '';
 
   # Keep Brave's new tab page clean: force-disable top sites and wipe their backing DBs.
   home.activation.braveHideTopSites = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
