@@ -72,7 +72,9 @@
       mv "$tmp" "$settings"
     else
       rm -f "$tmp"
-      warnEcho "Could not merge apps/claude-code/settings.json with ~/.claude/settings.json."
+      warnEcho "Unable to import Claude settings from" \
+        "apps/claude-code/settings.json. Claude will continue to use the" \
+        "settings in ~/.claude/settings.json."
     fi
   '';
 
