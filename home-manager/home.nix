@@ -58,16 +58,21 @@
     mkdir -p "$(dirname "$settings")"
 
     # Replaces missing or malformed ~/.claude/settings.json with {}.
-    if ! ${pkgs.jq}/bin/jq -e . "$settings" > /dev/null 2>&1; then
+    if ! ${pkgs.jq}/bin/jq -e 'type == "object"' "$settings" > /dev/null 2>&1; then
       echo '{}' > "$settings"
     fi
 
-    # Merging keys from apps/claude-code/settings.json into
-    # ~/.claude/settings.json giving priority to keys in
-    # apps/claude-code/settings.json.
-    tmp="$(mktemp)"
-    ${pkgs.jq}/bin/jq -s '.[0] * .[1]' \
-      "$settings" ${./../apps/claude-code/settings.json} > "$tmp" && mv "$tmp" "$settings"
+    # Merge apps/claude-code/settings.json into ~/.claude/settings.json via a
+    # scratch file, giving priority to keys in apps/claude-code/settings.json.
+    # If merge successful, replace ~/.claude/settings.json with scratch file.
+    tmp="$(mktemp "$settings.XXXXXX")"
+    if ${pkgs.jq}/bin/jq -s '.[0] * .[1]' \
+         "$settings" ${./../apps/claude-code/settings.json} > "$tmp"; then
+      mv "$tmp" "$settings"
+    else
+      rm -f "$tmp"
+      exit 1
+    fi
   '';
 
   # Keep Brave's new tab page clean: force-disable top sites and wipe their backing DBs.
