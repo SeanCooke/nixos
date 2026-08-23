@@ -72,7 +72,7 @@
       mv "$tmp" "$settings"
     else
       rm -f "$tmp"
-      exit 1
+      warnEcho "Could not merge apps/claude-code/settings.json with ~/.claude/settings.json."
     fi
   '';
 
