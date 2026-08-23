@@ -58,7 +58,8 @@
     mkdir -p "$(dirname "$settings")"
 
     # Replaces missing or malformed ~/.claude/settings.json with {}.
-    if ! ${pkgs.jq}/bin/jq -e 'type == "object"' "$settings" > /dev/null 2>&1; then
+    if ! ${pkgs.jq}/bin/jq -e -s 'length == 1 and (.[0] | type == "object")' \
+         "$settings" > /dev/null 2>&1; then
       echo '{}' > "$settings"
     fi
 
