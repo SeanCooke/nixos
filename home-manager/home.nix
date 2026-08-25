@@ -1,5 +1,42 @@
 { config, pkgs, lib, username, ... }:
 
+let
+  # Builds a Home Manager activation script that merges this repo's settings
+  # for an application into the settings file that application owns. The
+  # application writes to that file too, so we merge on top of its current
+  # state rather than overwrite it, giving priority to the keys in this repo.
+  #
+  #   appName - human readable name used in warnings, e.g. "Claude Code"
+  #   appDir  - directory under apps/ holding settings.json, e.g. "claude-code"
+  #   target  - settings file the application reads, may reference $HOME
+  mergeAppSettings = { appName, appDir, target }:
+    let
+      relativeSource = "apps/${appDir}/settings.json";
+      source = ./.. + "/${relativeSource}";
+    in
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      settings="${target}"
+      mkdir -p "$(dirname "$settings")"
+
+      # Replaces a missing or malformed settings file with {}.
+      if ! ${pkgs.jq}/bin/jq -e -s 'length == 1 and (.[0] | type == "object")' \
+           "$settings" > /dev/null 2>&1; then
+        echo '{}' > "$settings"
+      fi
+
+      # Merge ${relativeSource} into the settings file via a scratch file,
+      # giving priority to keys in ${relativeSource}. If the merge succeeds,
+      # replace the settings file with the scratch file.
+      tmp="$(mktemp "$settings.XXXXXX")"
+      if ${pkgs.jq}/bin/jq -s '.[0] * .[1]' "$settings" ${source} > "$tmp"; then
+        mv "$tmp" "$settings"
+      else
+        rm -f "$tmp"
+        warnEcho "Unable to import ${appName} settings from ${relativeSource}." \
+          "${appName} will continue to use the settings in ${target}."
+      fi
+    '';
+in
 {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
@@ -51,61 +88,19 @@
     # '';
   };
 
-  # Configuring Claude Code. Claude will also write to this file so we want to
-  # merge our settings with Claude's current state rather than overwrite it.
-  home.activation.claudeCodeSettings = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    settings="$HOME/.claude/settings.json"
-    mkdir -p "$(dirname "$settings")"
+  # Configuring Claude Code.
+  home.activation.claudeCodeSettings = mergeAppSettings {
+    appName = "Claude Code";
+    appDir = "claude-code";
+    target = "$HOME/.claude/settings.json";
+  };
 
-    # Replaces missing or malformed ~/.claude/settings.json with {}.
-    if ! ${pkgs.jq}/bin/jq -e -s 'length == 1 and (.[0] | type == "object")' \
-         "$settings" > /dev/null 2>&1; then
-      echo '{}' > "$settings"
-    fi
-
-    # Merge apps/claude-code/settings.json into ~/.claude/settings.json via a
-    # scratch file, giving priority to keys in apps/claude-code/settings.json.
-    # If merge successful, replace ~/.claude/settings.json with scratch file.
-    tmp="$(mktemp "$settings.XXXXXX")"
-    if ${pkgs.jq}/bin/jq -s '.[0] * .[1]' \
-         "$settings" ${./../apps/claude-code/settings.json} > "$tmp"; then
-      mv "$tmp" "$settings"
-    else
-      rm -f "$tmp"
-      warnEcho "Unable to import Claude settings from" \
-        "apps/claude-code/settings.json. Claude will continue to use the" \
-        "settings in ~/.claude/settings.json."
-    fi
-  '';
-
-  # Configuring Visual Studio Code. VSCode will also write to this file so we
-  # want to merge our settings with VSCode's current state rather than
-  # overwrite it.
-  home.activation.vscodeSettings = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    settings="$HOME/.config/Code/User/settings.json"
-    mkdir -p "$(dirname "$settings")"
-
-    # Replaces missing or malformed ~/.config/Code/User/settings.json with {}.
-    if ! ${pkgs.jq}/bin/jq -e -s 'length == 1 and (.[0] | type == "object")' \
-         "$settings" > /dev/null 2>&1; then
-      echo '{}' > "$settings"
-    fi
-
-    # Merge apps/visual-studio-code/settings.json into
-    # ~/.config/Code/User/settings.json via a scratch file, giving priority to
-    # keys in apps/visual-studio-code/settings.json. If merge successful,
-    # replace ~/.config/Code/User/settings.json with scratch file.
-    tmp="$(mktemp "$settings.XXXXXX")"
-    if ${pkgs.jq}/bin/jq -s '.[0] * .[1]' \
-         "$settings" ${./../apps/visual-studio-code/settings.json} > "$tmp"; then
-      mv "$tmp" "$settings"
-    else
-      rm -f "$tmp"
-      warnEcho "Unable to import VSCode settings from" \
-        "apps/visual-studio-code/settings.json. VSCode will continue to use the" \
-        "settings in ~/.config/Code/User/settings.json."
-    fi
-  '';
+  # Configuring Visual Studio Code.
+  home.activation.vscodeSettings = mergeAppSettings {
+    appName = "Visual Studio Code";
+    appDir = "visual-studio-code";
+    target = "$HOME/.config/Code/User/settings.json";
+  };
 
   # Keep Brave's new tab page clean: force-disable top sites and wipe their backing DBs.
   home.activation.braveHideTopSites = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
