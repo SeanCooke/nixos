@@ -78,6 +78,35 @@
     fi
   '';
 
+  # Configuring Visual Studio Code. VSCode will also write to this file so we
+  # want to merge our settings with VSCode's current state rather than
+  # overwrite it.
+  home.activation.vscodeSettings = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    settings="$HOME/.config/Code/User/settings.json"
+    mkdir -p "$(dirname "$settings")"
+
+    # Replaces missing or malformed ~/.config/Code/User/settings.json with {}.
+    if ! ${pkgs.jq}/bin/jq -e -s 'length == 1 and (.[0] | type == "object")' \
+         "$settings" > /dev/null 2>&1; then
+      echo '{}' > "$settings"
+    fi
+
+    # Merge apps/visual-studio-code/settings.json into
+    # ~/.config/Code/User/settings.json via a scratch file, giving priority to
+    # keys in apps/visual-studio-code/settings.json. If merge successful,
+    # replace ~/.config/Code/User/settings.json with scratch file.
+    tmp="$(mktemp "$settings.XXXXXX")"
+    if ${pkgs.jq}/bin/jq -s '.[0] * .[1]' \
+         "$settings" ${./../apps/visual-studio-code/settings.json} > "$tmp"; then
+      mv "$tmp" "$settings"
+    else
+      rm -f "$tmp"
+      warnEcho "Unable to import VSCode settings from" \
+        "apps/visual-studio-code/settings.json. VSCode will continue to use the" \
+        "settings in ~/.config/Code/User/settings.json."
+    fi
+  '';
+
   # Keep Brave's new tab page clean: force-disable top sites and wipe their backing DBs.
   home.activation.braveHideTopSites = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     pref="$HOME/.config/BraveSoftware/Brave-Browser/Default/Preferences"

@@ -121,7 +121,16 @@
     tree
     unzip
     vim
-    vscode
+    (pkgs.vscode-with-extensions.override {
+      vscodeExtensions = pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+        {
+          name = "laserwave";
+          publisher = "jaredkent";
+          version = "1.3.3";
+          sha256 = "0pfp07fvq1if214r9nz64hasnsrn8jrlfb4pkckv5wf0wwm5vgs4";
+        }
+      ];
+    })
     wget
     zoom-us
   ];
