@@ -1,17 +1,18 @@
 { config, pkgs, lib, username, ... }:
 
 let
-  # Builds a Home Manager activation script that merges this repo's settings
-  # for an application into the settings file that application owns. The
-  # application writes to that file too, so we merge on top of its current
-  # state rather than overwrite it, giving priority to the keys in this repo.
+  # Builds a Home Manager activation script that merges this repo's application
+  # settings into the settings file that application owns. The application
+  # writes to that file too, so we merge on top of its current state rather
+  # than overwrite it.  Priority is given to the keys in appSettingsFile.
   #
-  #   appName - human readable name used in warnings, e.g. "Claude Code"
-  #   appDir  - directory under apps/ holding settings.json, e.g. "claude-code"
-  #   target  - settings file the application reads, may reference $HOME
-  mergeAppSettings = { appName, appDir, target }:
+  #   appName         - human readable name used in warnings, e.g. "Claude Code"
+  #   appSettingsFile - settings file under apps/, e.g.
+  #                     "claude-code/settings.json"
+  #   target          - settings file the application reads, may reference $HOME
+  mergeAppSettings = { appName, appSettingsFile, target }:
     let
-      relativeSource = "apps/${appDir}/settings.json";
+      relativeSource = "apps/${appSettingsFile}";
       source = ./.. + "/${relativeSource}";
     in
     lib.hm.dag.entryAfter [ "writeBoundary" ] ''
@@ -91,14 +92,14 @@ in
   # Configuring Claude Code.
   home.activation.claudeCodeSettings = mergeAppSettings {
     appName = "Claude Code";
-    appDir = "claude-code";
+    appSettingsFile = "claude-code/settings.json";
     target = "$HOME/.claude/settings.json";
   };
 
   # Configuring Visual Studio Code.
   home.activation.vscodeSettings = mergeAppSettings {
     appName = "Visual Studio Code";
-    appDir = "visual-studio-code";
+    appSettingsFile = "visual-studio-code/settings.json";
     target = "$HOME/.config/Code/User/settings.json";
   };
 
