@@ -116,6 +116,7 @@
       ];
     })
     libreoffice
+    python3
     slack
     spotify
     tree
