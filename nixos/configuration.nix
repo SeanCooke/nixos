@@ -117,6 +117,7 @@
     })
     libreoffice
     (python3.withPackages (ps: with ps; [
+      jupyter
       numpy
       pandas
       scikit-learn
