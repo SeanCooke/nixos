@@ -51,6 +51,33 @@
     # '';
   };
 
+  # Configuring Claude Code. Claude will also write to this file so we want to
+  # merge our settings with Claude's current state rather than overwrite it.
+  home.activation.claudeCodeSettings = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    settings="$HOME/.claude/settings.json"
+    mkdir -p "$(dirname "$settings")"
+
+    # Replaces missing or malformed ~/.claude/settings.json with {}.
+    if ! ${pkgs.jq}/bin/jq -e -s 'length == 1 and (.[0] | type == "object")' \
+         "$settings" > /dev/null 2>&1; then
+      echo '{}' > "$settings"
+    fi
+
+    # Merge apps/claude-code/settings.json into ~/.claude/settings.json via a
+    # scratch file, giving priority to keys in apps/claude-code/settings.json.
+    # If merge successful, replace ~/.claude/settings.json with scratch file.
+    tmp="$(mktemp "$settings.XXXXXX")"
+    if ${pkgs.jq}/bin/jq -s '.[0] * .[1]' \
+         "$settings" ${./../apps/claude-code/settings.json} > "$tmp"; then
+      mv "$tmp" "$settings"
+    else
+      rm -f "$tmp"
+      warnEcho "Unable to import Claude settings from" \
+        "apps/claude-code/settings.json. Claude will continue to use the" \
+        "settings in ~/.claude/settings.json."
+    fi
+  '';
+
   # Keep Brave's new tab page clean: force-disable top sites and wipe their backing DBs.
   home.activation.braveHideTopSites = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     pref="$HOME/.config/BraveSoftware/Brave-Browser/Default/Preferences"
