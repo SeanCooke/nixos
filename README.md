@@ -37,8 +37,9 @@ sudo nixos-rebuild switch --flake .#laptop
 
 A flake only sees files that git tracks. Editing a file already in the repo is enough, but a file you add must be `git add`ed before `nixos-rebuild` will see it.
 
-## NordVPN
-The `networkmanager-openvpn` plugin enabled in `nixos/configuration.nix` lets you import NordVPN profiles and toggle them from the GNOME system menu.
+## Manual Configuration
+### NordVPN
+NordVPN is a paid service and requires an OpenVPN config file (`.ovpn`) that must be downloaded from the [NordVPN dashboard](https://my.nordaccount.com/) to access the service.  The `networkmanager-openvpn` plugin enabled in `nixos/configuration.nix` lets you import NordVPN profiles and toggle them from the GNOME system menu.
 
 1. After the first rebuild that adds the plugin, restart NetworkManager so it loads the new VPN service. Otherwise activating the VPN fails with `The VPN service 'org.freedesktop.NetworkManager.openvpn' was not installed`. A reboot works too.
 ```bash
