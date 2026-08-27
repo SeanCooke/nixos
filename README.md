@@ -1,5 +1,5 @@
 # nixos-config
-Collection of configuration files that declaratively define applications and settings on my NixOS laptop, managed as a [Nix flake](https://nixos.wiki/wiki/flakes).
+Collection of configuration files that declaratively define applications and settings on my NixOS laptop, managed as a [Nix flake](https://wiki.nixos.org/wiki/Flakes).
 
 ![Screenshot of laptop desktop](images/desktop.png)
 
@@ -11,7 +11,7 @@ Collection of configuration files that declaratively define applications and set
 - `home-manager/home.nix` — Home Manager.
 
 ## Install
-`nixos-config` can only be run on machines where NixOS is already installed. You can download the NixOS ISO from the [official NixOS download page](https://nixos.org/download.html#nixos-iso).
+`nixos-config` can only be run on machines where NixOS is already installed. You can download the NixOS ISO from the [official NixOS download page](https://nixos.org/download/#nixos-iso).
 
 1. Clone this github repo into your home directory.
 ```bash
