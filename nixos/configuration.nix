@@ -49,6 +49,9 @@
   services.desktopManager.gnome.enable = true;
   services.displayManager.gdm.enable = true;
 
+  # Removing default Web application since we use Brave.
+  environment.gnome.excludePackages = with pkgs; [ epiphany ];
+
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "us";
@@ -117,6 +120,7 @@
     })
     libreoffice
     (python3.withPackages (ps: with ps; [
+      jupyter
       numpy
       pandas
       scikit-learn
@@ -133,6 +137,7 @@
 
   # Setting default web browser to Brave.
   xdg.mime.defaultApplications = {
+    "text/html"              = "brave-browser.desktop";
     "x-scheme-handler/http"  = "brave-browser.desktop";
     "x-scheme-handler/https" = "brave-browser.desktop";
   };
