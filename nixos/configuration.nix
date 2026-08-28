@@ -142,12 +142,7 @@
   };
 
   # Setting default shell to zsh.
-  programs.zsh = {
-    enable = true;
-    # Deferring settings to oh-my-zsh.
-    enableGlobalCompInit = false;
-    promptInit = "";
-  };
+  programs.zsh.enable = true;
 
   # Setting default web browser to Brave.
   xdg.mime.defaultApplications = {
