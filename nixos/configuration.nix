@@ -93,6 +93,7 @@
   users.users.${username} = {
     isNormalUser = true;
     description = fullName;
+    shell = pkgs.zsh;
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
     #  thunderbird
@@ -139,6 +140,9 @@
     enable = true;
     defaultEditor = true;
   };
+
+  # Setting default shell to zsh.
+  programs.zsh.enable = true;
 
   # Setting default web browser to Brave.
   xdg.mime.defaultApplications = {
