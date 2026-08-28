@@ -138,7 +138,7 @@ let unsetSshAskpass = "unset SSH_ASKPASS"; in
       enable = true;
       theme = "robbyrussell";
     };
-    initContent = unsetSshAskpass;
+    envExtra = unsetSshAskpass;
   };
 
   # Configuring the GNOME dock.
