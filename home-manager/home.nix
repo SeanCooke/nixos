@@ -1,5 +1,7 @@
 { config, pkgs, lib, username, ... }:
 
+# Requiring git authentication from command line only.
+let unsetSshAskpass = "unset SSH_ASKPASS"; in
 {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
@@ -123,13 +125,20 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
-  # Force git/ssh to prompt in the terminal instead of launching the GNOME
-  # ssh-askpass dialog, which GNOME exports SSH_ASKPASS for on session start.
   programs.bash = {
     enable = true;
-    bashrcExtra = ''
-      unset SSH_ASKPASS
-    '';
+    bashrcExtra = unsetSshAskpass;
+  };
+
+  # Installing Oh My Zsh. The default shell is set to zsh in
+  # nixos/configuration.nix.
+  programs.zsh = {
+    enable = true;
+    oh-my-zsh = {
+      enable = true;
+      theme = "robbyrussell";
+    };
+    envExtra = unsetSshAskpass;
   };
 
   # Configuring the GNOME dock.
