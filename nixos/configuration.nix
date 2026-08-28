@@ -135,6 +135,9 @@
     zoom-us
   ];
 
+  # Setting default command line editor to vim.
+  environment.variables.EDITOR = "vim";
+
   # Setting default web browser to Brave.
   xdg.mime.defaultApplications = {
     "text/html"              = "brave-browser.desktop";
