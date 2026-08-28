@@ -129,11 +129,16 @@
     spotify
     tree
     unzip
-    vim
     vscode
     wget
     zoom-us
   ];
+
+  # Setting default command line editor to vim.
+  programs.vim = {
+    enable = true;
+    defaultEditor = true;
+  };
 
   # Setting default web browser to Brave.
   xdg.mime.defaultApplications = {
