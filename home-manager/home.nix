@@ -1,9 +1,9 @@
 { config, pkgs, lib, username, ... }:
 
-# Requiring git authentication from command line only.
-let unsetSshAskpass = "unset SSH_ASKPASS"; in
-
 let
+  # Requiring git authentication from command line only.
+  unsetSshAskpass = "unset SSH_ASKPASS";
+
   # Builds a Home Manager activation script that merges this repo's application
   # settings into the settings file that application owns. The application
   # writes to that file too, so we merge on top of its current state rather
