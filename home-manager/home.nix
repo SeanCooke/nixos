@@ -1,7 +1,47 @@
 { config, pkgs, lib, username, ... }:
 
-# Requiring git authentication from command line only.
-let unsetSshAskpass = "unset SSH_ASKPASS"; in
+let
+  # Requiring git authentication from command line only.
+  unsetSshAskpass = "unset SSH_ASKPASS";
+
+  # Merging this repo's settings into the application's settings file.  Merge
+  # used rather than replace as the application also writes to this settings
+  # file and we don't want to overwrite its settings.
+  #
+  #   appName         - human readable name used in warnings, e.g. "Claude Code"
+  #   appSettingsFile - settings file under apps/, e.g.
+  #                     "claude-code/settings.json"
+  #   target          - settings file the application reads, may reference $HOME
+  #                   - e.g. "$HOME/.claude/settings.json"
+  mergeAppSettings = { appName, appSettingsFile, target }:
+    let
+      relativeSource = "apps/${appSettingsFile}";
+      source = ./.. + "/${relativeSource}";
+    in
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      settings="${target}"
+      mkdir -p "$(dirname "$settings")"
+
+      # Replaces a missing or malformed settings file with {}.
+      if ! ${pkgs.jq}/bin/jq -e -s 'length == 1 and (.[0] | type == "object")' \
+           "$settings" > /dev/null 2>&1; then
+        echo '{}' > "$settings"
+      fi
+
+      # Merge ${relativeSource} into the settings file via a scratch file,
+      # giving priority to keys in ${relativeSource}. If the merge succeeds,
+      # replace the settings file with the scratch file.
+      tmp="$(mktemp "$settings.XXXXXX")"
+      if ${pkgs.jq}/bin/jq -s '.[0] * .[1]' "$settings" ${source} > "$tmp"; then
+        mv "$tmp" "$settings"
+      else
+        rm -f "$tmp"
+        warnEcho \
+          "Unable to import ${appName} settings from ${relativeSource}." \
+          "${appName} will continue to use the settings in ${target}."
+      fi
+    '';
+in
 {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
@@ -26,8 +66,8 @@ let unsetSshAskpass = "unset SSH_ASKPASS"; in
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
-    # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
-    # # fonts?
+    # # parentheses. Maybe you want to install Nerd Fonts with a limited
+    # # number of fonts?
     # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
 
     # # You can also create simple shell scripts directly inside your
@@ -42,8 +82,8 @@ let unsetSshAskpass = "unset SSH_ASKPASS"; in
   # plain files is through 'home.file'.
   home.file = {
     # # Building this configuration will create a copy of 'dotfiles/screenrc' in
-    # # the Nix store. Activating the configuration will then make '~/.screenrc' a
-    # # symlink to the Nix store copy.
+    # # the Nix store. Activating the configuration will then make
+    # # '~/.screenrc' a symlink to the Nix store copy.
     # ".screenrc".source = dotfiles/screenrc;
 
     # # You can also set the file content immediately.
@@ -53,35 +93,24 @@ let unsetSshAskpass = "unset SSH_ASKPASS"; in
     # '';
   };
 
-  # Configuring Claude Code. Claude will also write to this file so we want to
-  # merge our settings with Claude's current state rather than overwrite it.
-  home.activation.claudeCodeSettings = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    settings="$HOME/.claude/settings.json"
-    mkdir -p "$(dirname "$settings")"
+  # Configuring Claude Code.
+  home.activation.claudeCodeSettings = mergeAppSettings {
+    appName = "Claude Code";
+    appSettingsFile = "claude-code/settings.json";
+    target = "$HOME/.claude/settings.json";
+  };
 
-    # Replaces missing or malformed ~/.claude/settings.json with {}.
-    if ! ${pkgs.jq}/bin/jq -e -s 'length == 1 and (.[0] | type == "object")' \
-         "$settings" > /dev/null 2>&1; then
-      echo '{}' > "$settings"
-    fi
+  # Configuring Visual Studio Code.
+  home.activation.vscodeSettings = mergeAppSettings {
+    appName = "Visual Studio Code";
+    appSettingsFile = "visual-studio-code/settings.json";
+    target = "$HOME/.config/Code/User/settings.json";
+  };
 
-    # Merge apps/claude-code/settings.json into ~/.claude/settings.json via a
-    # scratch file, giving priority to keys in apps/claude-code/settings.json.
-    # If merge successful, replace ~/.claude/settings.json with scratch file.
-    tmp="$(mktemp "$settings.XXXXXX")"
-    if ${pkgs.jq}/bin/jq -s '.[0] * .[1]' \
-         "$settings" ${./../apps/claude-code/settings.json} > "$tmp"; then
-      mv "$tmp" "$settings"
-    else
-      rm -f "$tmp"
-      warnEcho "Unable to import Claude settings from" \
-        "apps/claude-code/settings.json. Claude will continue to use the" \
-        "settings in ~/.claude/settings.json."
-    fi
-  '';
-
-  # Keep Brave's new tab page clean: force-disable top sites and wipe their backing DBs.
-  home.activation.braveHideTopSites = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+  # Keep Brave's new tab page clean: force-disable top sites and wipe their
+  # backing DBs.
+  home.activation.braveHideTopSites =
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     pref="$HOME/.config/BraveSoftware/Brave-Browser/Default/Preferences"
     top_sites="$HOME/.config/BraveSoftware/Brave-Browser/Default/Top Sites"
     shortcuts="$HOME/.config/BraveSoftware/Brave-Browser/Default/Shortcuts"
