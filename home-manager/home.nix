@@ -4,15 +4,15 @@ let
   # Requiring git authentication from command line only.
   unsetSshAskpass = "unset SSH_ASKPASS";
 
-  # Builds a Home Manager activation script that merges this repo's application
-  # settings into the settings file that application owns. The application
-  # writes to that file too, so we merge on top of its current state rather
-  # than overwrite it.  Priority is given to the keys in appSettingsFile.
+  # Merging this repo's settings into the application's settings file.  Merge
+  # used rather than replace as the application also writes to this settings
+  # file and we don't want to overwrite its settings.
   #
   #   appName         - human readable name used in warnings, e.g. "Claude Code"
   #   appSettingsFile - settings file under apps/, e.g.
   #                     "claude-code/settings.json"
   #   target          - settings file the application reads, may reference $HOME
+  #                   - e.g. "$HOME/.claude/settings.json"
   mergeAppSettings = { appName, appSettingsFile, target }:
     let
       relativeSource = "apps/${appSettingsFile}";
@@ -36,7 +36,8 @@ let
         mv "$tmp" "$settings"
       else
         rm -f "$tmp"
-        warnEcho "Unable to import ${appName} settings from ${relativeSource}." \
+        warnEcho \
+          "Unable to import ${appName} settings from ${relativeSource}." \
           "${appName} will continue to use the settings in ${target}."
       fi
     '';
@@ -65,8 +66,8 @@ in
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
-    # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
-    # # fonts?
+    # # parentheses. Maybe you want to install Nerd Fonts with a limited
+    # # number of fonts?
     # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
 
     # # You can also create simple shell scripts directly inside your
@@ -81,8 +82,8 @@ in
   # plain files is through 'home.file'.
   home.file = {
     # # Building this configuration will create a copy of 'dotfiles/screenrc' in
-    # # the Nix store. Activating the configuration will then make '~/.screenrc' a
-    # # symlink to the Nix store copy.
+    # # the Nix store. Activating the configuration will then make
+    # # '~/.screenrc' a symlink to the Nix store copy.
     # ".screenrc".source = dotfiles/screenrc;
 
     # # You can also set the file content immediately.
@@ -106,8 +107,10 @@ in
     target = "$HOME/.config/Code/User/settings.json";
   };
 
-  # Keep Brave's new tab page clean: force-disable top sites and wipe their backing DBs.
-  home.activation.braveHideTopSites = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+  # Keep Brave's new tab page clean: force-disable top sites and wipe their
+  # backing DBs.
+  home.activation.braveHideTopSites =
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     pref="$HOME/.config/BraveSoftware/Brave-Browser/Default/Preferences"
     top_sites="$HOME/.config/BraveSoftware/Brave-Browser/Default/Top Sites"
     shortcuts="$HOME/.config/BraveSoftware/Brave-Browser/Default/Shortcuts"
