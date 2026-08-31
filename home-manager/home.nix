@@ -92,7 +92,8 @@ in
     #   org.gradle.daemon.idletimeout=3600000
     # '';
 
-    # Font multiplier managed through scale tag in home-manager/monitors.xml.
+    # Font multiplier managed through text-scaling-factor in
+    # nixos/configuration.nix; the scale tag below only pins pixel geometry.
     ".config/monitors.xml".source = ./monitors.xml;
   };
 

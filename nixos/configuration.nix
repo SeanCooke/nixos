@@ -187,6 +187,11 @@
       settings = {
         "org/gnome/desktop/interface" = {
           color-scheme = "prefer-dark";
+          text-scaling-factor = 1.5;
+        };
+        # Increasing the Console font size by a multiplier.
+        "org/gnome/Console" = {
+          font-scale = 1.5;
         };
       };
     }
