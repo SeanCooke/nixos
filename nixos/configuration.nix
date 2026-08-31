@@ -124,6 +124,7 @@
       jupyter
       numpy
       pandas
+      pytest
       scikit-learn
     ]))
     slack
@@ -139,7 +140,10 @@
           version = "1.3.3";
           sha256 = "0pfp07fvq1if214r9nz64hasnsrn8jrlfb4pkckv5wf0wwm5vgs4";
         }
-      ];
+      ] ++ (with pkgs.vscode-extensions; [
+        ms-python.python
+        ms-python.debugpy
+      ]);
     })
     wget
     zoom-us
