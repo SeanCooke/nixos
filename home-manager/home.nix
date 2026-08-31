@@ -91,6 +91,9 @@ in
     #   org.gradle.console=verbose
     #   org.gradle.daemon.idletimeout=3600000
     # '';
+
+    # Font multiplier managed through scale tag in home-manager/monitors.xml.
+    ".config/monitors.xml".source = ./monitors.xml;
   };
 
   # Configuring Claude Code.
@@ -179,11 +182,6 @@ in
         "spotify.desktop"
         "org.gnome.Nautilus.desktop"
       ];
-    };
-
-    # Increasing the Console font size by a multiplier.
-    "org/gnome/Console" = {
-      font-scale = 1.5;
     };
   };
 
