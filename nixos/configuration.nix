@@ -187,9 +187,14 @@
       settings = {
         "org/gnome/desktop/interface" = {
           color-scheme = "prefer-dark";
+          # Scales fonts everywhere; no per-application flags needed. GTK apps
+          # read it directly, Chromium and Electron apps (Brave, VS Code, Slack,
+          # Spotify) read it through xdg-desktop-portal, and Qt apps (KeePassXC,
+          # Zoom) read it as Xft.dpi. Console is the one exception below.
           text-scaling-factor = 1.5;
         };
-        # Increasing the Console font size by a multiplier.
+        # Console renders in a fixed-size terminal font that text-scaling-factor
+        # does not touch, so increase it by the same multiplier.
         "org/gnome/Console" = {
           font-scale = 1.5;
         };
