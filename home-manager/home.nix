@@ -92,8 +92,10 @@ in
     #   org.gradle.daemon.idletimeout=3600000
     # '';
 
-    # Font multiplier managed through text-scaling-factor in
-    # nixos/configuration.nix; the scale tag below only pins pixel geometry.
+    # The scale tag here is the single desktop-wide zoom. Everything the
+    # compositor draws is magnified by it, so no per-application font or zoom
+    # setting is needed anywhere; see nixos/configuration.nix for the two
+    # things that legitimately sit outside it.
     ".config/monitors.xml".source = ./monitors.xml;
   };
 
