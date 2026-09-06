@@ -93,7 +93,10 @@ in
     # '';
 
     # Configuring global zoom.
-    ".config/monitors.xml".source = ./monitors.xml;
+    ".config/monitors.xml" = {
+      source = ./monitors.xml;
+      force = true;
+    };
   };
 
   # Configuring Claude Code.
@@ -182,6 +185,11 @@ in
         "spotify.desktop"
         "org.gnome.Nautilus.desktop"
       ];
+    };
+
+    # Increasing the Console font size by a multiplier.
+    "org/gnome/Console" = {
+      font-scale = 1.5;
     };
   };
 
