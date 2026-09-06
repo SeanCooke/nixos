@@ -95,7 +95,6 @@ in
     # Configuring global zoom.
     ".config/monitors.xml" = {
       source = ./monitors.xml;
-      force = true;
     };
   };
 
