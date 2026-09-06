@@ -91,6 +91,11 @@ in
     #   org.gradle.console=verbose
     #   org.gradle.daemon.idletimeout=3600000
     # '';
+
+    # Configuring global zoom.
+    ".config/monitors.xml" = {
+      source = ./monitors.xml;
+    };
   };
 
   # Configuring Claude Code.
