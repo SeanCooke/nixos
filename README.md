@@ -9,6 +9,7 @@ Collection of configuration files that declaratively define applications and set
 - `nixos/configuration.nix` — System configuration.
 - `nixos/hardware-configuration.nix` — Example hardware scan.  Replace it with your own `/etc/nixos/hardware-configuration.nix`.
 - `home-manager/home.nix` — Home Manager.
+- `images/face.jpg` — Profile picture, shown on the login screen and in GNOME.
 
 ## Install
 `nixos-config` can only be run on machines where NixOS is already installed. You can download the NixOS ISO from the [official NixOS download page](https://nixos.org/download/#nixos-iso).
