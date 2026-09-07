@@ -94,9 +94,6 @@ in
 
     # Configuring global zoom.
     ".config/monitors.xml".source = ./monitors.xml;
-
-    # Configuring profile picture.
-    ".face".source = ./../images/face.jpg;
   };
 
   # Configuring Claude Code.
