@@ -95,8 +95,7 @@ in
     # Configuring global zoom.
     ".config/monitors.xml".source = ./monitors.xml;
 
-    # Configuring the profile picture.  The login screen reads the same image
-    # from /var/lib/AccountsService/icons, see nixos/configuration.nix.
+    # Configuring profile picture.
     ".face".source = ./../images/face.jpg;
   };
 
