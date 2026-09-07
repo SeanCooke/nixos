@@ -102,7 +102,7 @@
 
   # Configuring profile picture.
   system.activationScripts.profilePicture.text = ''
-    mkdir -p /var/lib/AccountsService/users
+    mkdir -p -m 0700 /var/lib/AccountsService/users
     ${pkgs.crudini}/bin/crudini --set /var/lib/AccountsService/users/${username} \
       User Icon ${./../images/face.jpg}
   '';
