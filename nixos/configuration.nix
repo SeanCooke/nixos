@@ -100,11 +100,7 @@
     ];
   };
 
-  # Loading the profile picture before the first login.  The GDM greeter runs as
-  # the gdm user and cannot read ~/.face through a private home directory, so
-  # AccountsService is pointed at the world readable Nix store copy instead.
-  # Its user file also holds state we do not manage, such as the session to log
-  # into, so the key is merged in rather than the file overwritten.
+  # Configuring profile picture.
   system.activationScripts.profilePicture.text = ''
     mkdir -p /var/lib/AccountsService/users
     ${pkgs.crudini}/bin/crudini --set /var/lib/AccountsService/users/${username} \
