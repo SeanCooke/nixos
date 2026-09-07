@@ -100,6 +100,13 @@
     ];
   };
 
+  # Configuring profile picture.
+  system.activationScripts.profilePicture.text = ''
+    mkdir -p -m 0700 /var/lib/AccountsService/users
+    ${pkgs.crudini}/bin/crudini --set /var/lib/AccountsService/users/${username} \
+      User Icon ${./../images/face.jpg}
+  '';
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
